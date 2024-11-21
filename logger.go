@@ -97,7 +97,7 @@ func New() *Logger {
 		ExitFunc:     os.Exit,
 		ReportCaller: false,
 		MsgSpaces:    " ",
-		UseMsgSpaces: false,
+		UseMsgSpaces: true,
 	}
 }
 
