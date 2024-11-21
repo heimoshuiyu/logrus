@@ -301,7 +301,7 @@ func (entry *Entry) write() {
 // For this behaviour Entry.Panic or Entry.Fatal should be used instead.
 func (entry *Entry) Log(level Level, args ...interface{}) {
 	if entry.Logger.IsLevelEnabled(level) {
-		entry.log(level, fmt.Sprint(args...))
+		entry.log(level, entry.sprintsp(args...))
 	}
 }
 
@@ -439,4 +439,16 @@ func (entry *Entry) Panicln(args ...interface{}) {
 func (entry *Entry) sprintlnn(args ...interface{}) string {
 	msg := fmt.Sprintln(args...)
 	return msg[:len(msg)-1]
+}
+
+// spaces are always added between operands
+func (entry *Entry) sprintsp(args ...interface{}) string {
+	if entry.Logger.UseMsgSpaces && len(args) > 1 {
+		var tmp []interface{}
+		for _, arg := range args {
+			tmp = append(tmp, arg, entry.Logger.MsgSpaces)
+		}
+		args = tmp[:len(tmp)-1]
+	}
+	return fmt.Sprint(args...)
 }
